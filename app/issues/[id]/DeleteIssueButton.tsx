@@ -1,5 +1,4 @@
 "use client";
-import prisma from "@/prisma/client";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
