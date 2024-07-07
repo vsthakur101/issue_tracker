@@ -27,7 +27,7 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
     <>
       <Select.Root
         defaultValue={issue.assignedToUserId || ""}
-        onValueChange={(userId) => handleAssignee(userId)}
+        onValueChange={handleAssignee}
       >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
