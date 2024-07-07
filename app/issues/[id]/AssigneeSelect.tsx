@@ -8,16 +8,18 @@ import Skeleton from "react-loading-skeleton";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function AssigneeSelect({ issue }: { issue: Issue }) {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000, //60s
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
+
+  async function handleAssignee(userId: string) {
+    try {
+      await axios.patch(`/api/issues/${issue.id}`, {
+        assignedToUserId: userId || null,
+      });
+      toast.success("User assigned to this issue.");
+    } catch (error) {
+      toast.error("Changed could not be saved.");
+    }
+  }
 
   if (error) return null;
   if (isLoading) return <Skeleton />;
@@ -25,18 +27,9 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
     <>
       <Select.Root
         defaultValue={issue.assignedToUserId || ""}
-        onValueChange={async (userId) => {
-          try {
-            await axios.patch(`/api/issues/${issue.id}`, {
-              assignedToUserId: userId || null,
-            });
-            toast.success("User assigned to this issue.");
-          } catch (error) {
-            toast.error("Changed could not be saved.");
-          }
-        }}
+        onValueChange={(userId) => handleAssignee(userId)}
       >
-        <Select.Trigger placeholder="Assignee..." />
+        <Select.Trigger placeholder="Assign..." />
         <Select.Content>
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
@@ -53,3 +46,11 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
     </>
   );
 }
+
+const useUsers = () =>
+  useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000, //60s
+    retry: 3,
+  });
