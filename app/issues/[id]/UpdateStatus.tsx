@@ -28,13 +28,20 @@ export default function UpdateStatus({ issue }: { issue: Issue }) {
         onValueChange={handleAssignee}
       >
         <Select.Trigger placeholder="Status" />
-        <Select.Content>
+        <Select.Content
+          color={`${
+            issue.status === "OPEN"
+              ? "red"
+              : issue.status === "CLOSED"
+              ? "green"
+              : "violet"
+          }`}
+        >
           <Select.Group>
-            <Select.Label>Status</Select.Label>
             {statuses.map((status) => (
               <Select.Item
                 key={status.value}
-                value={status.value || statuses[0].value}
+                value={status.value || statuses[0]?.value!}
               >
                 {status.label}
               </Select.Item>

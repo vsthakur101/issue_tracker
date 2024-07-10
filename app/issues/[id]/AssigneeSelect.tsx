@@ -15,7 +15,7 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
   async function handleAssignee(userId: string) {
     try {
       await axios.patch(`/api/issues/${issue.id}`, {
-        assignedToUserId: userId || null,
+        assignedToUserId: userId || issue.assignedToUserId,
       });
       toast.success("User assigned to this issue.");
       push("/");
