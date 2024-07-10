@@ -32,7 +32,7 @@ export default function UpdateStatus({ issue }: { issue: Issue }) {
           <Select.Group>
             <Select.Label>Status</Select.Label>
             {statuses.map((status) => (
-              <Select.Item key={status.value} value={status.value || "ALL"}>
+              <Select.Item key={status.value} value={status.value || ""}>
                 {status.label}
               </Select.Item>
             ))}
