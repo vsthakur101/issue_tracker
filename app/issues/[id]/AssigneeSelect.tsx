@@ -6,9 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function AssigneeSelect({ issue }: { issue: Issue }) {
   const { data: users, error, isLoading } = useUsers();
+  const { push, refresh } = useRouter();
 
   async function handleAssignee(userId: string) {
     try {
@@ -16,6 +18,8 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
         assignedToUserId: userId || null,
       });
       toast.success("User assigned to this issue.");
+      push("/");
+      refresh();
     } catch (error) {
       toast.error("Changed could not be saved.");
     }
