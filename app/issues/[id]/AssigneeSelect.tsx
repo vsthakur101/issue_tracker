@@ -30,7 +30,7 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
   return (
     <>
       <Select.Root
-        defaultValue={issue.assignedToUserId || ""}
+        defaultValue={issue.assignedToUserId || "ALL"}
         onValueChange={handleAssignee}
       >
         <Select.Trigger placeholder="Assign..." />
